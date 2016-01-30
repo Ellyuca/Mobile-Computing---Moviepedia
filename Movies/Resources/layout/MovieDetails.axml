@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <ScrollView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView">
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:stretchColumns="1">
+            <TextView
+                android:text="MovieTitle"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/details"
+                android:gravity="center"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="25px" />
+            <ImageView
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:id="@+id/movieImage"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="50px" />
+            <TextView
+                android:text="Plot"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/moviePlot"
+                android:gravity="center"
+                android:layout_below="@id/movieImage"
+                android:paddingTop="35px" />
+            <TextView
+                android:text="Plot2"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/moviePlot2"
+                android:gravity="center"
+                android:layout_below="@id/moviePlot" />
+        </TableLayout>
+    </ScrollView>
+</RelativeLayout>
