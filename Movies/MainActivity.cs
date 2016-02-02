@@ -26,7 +26,16 @@ namespace Movies
         LinearLayout mLinearLayout;
         LinearLayout mTitleSectionLayout;
         LinearLayout mGetSectionLayout;
-      
+        LinearLayout mPrevNextLayout;
+        ListView mListaLayout;
+        Button next;
+        Button prev;
+        List<string> items;
+        int pageNumber = 1;
+        EditText movieTitle;
+        
+
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -37,9 +46,19 @@ namespace Movies
             // Get our button from the layout resource,
             // and attach an event to it
             // Get the Title EditBox and button resources:
+
+            next = FindViewById<Button>(Resource.Id.getNextButton);
+            prev = FindViewById<Button>(Resource.Id.getPreviousButton);
+            next.Visibility = ViewStates.Invisible;
+            prev.Visibility = ViewStates.Invisible;
+
+
+
             mLinearLayout = FindViewById<LinearLayout>(Resource.Id.mainView);
             mTitleSectionLayout = FindViewById<LinearLayout>(Resource.Id.titleSection);
             mGetSectionLayout = FindViewById<LinearLayout>(Resource.Id.getSection);
+            mPrevNextLayout = FindViewById<LinearLayout>(Resource.Id.prev_next_section);
+            mListaLayout = FindViewById<ListView>(Resource.Id.listaFilm);
             
             mLinearLayout.Click += (sender, e) =>
             {
@@ -57,8 +76,14 @@ namespace Movies
                 InputMethodManager inputManager = (InputMethodManager)this.GetSystemService(Activity.InputMethodService);
                 inputManager.HideSoftInputFromWindow(this.CurrentFocus.WindowToken, HideSoftInputFlags.None);
             };
-           
-            EditText movieTitle = FindViewById<EditText>(Resource.Id.titleText);
+            
+            mPrevNextLayout.Click += (sender, e) =>
+            {
+                InputMethodManager inputManager = (InputMethodManager)this.GetSystemService(Activity.InputMethodService);
+                inputManager.HideSoftInputFromWindow(this.CurrentFocus.WindowToken, HideSoftInputFlags.None);
+            };
+
+            movieTitle = FindViewById<EditText>(Resource.Id.titleText);
             ListView listaFilm = FindViewById<ListView>(Resource.Id.listaFilm);
             Button searchMoviesButton = FindViewById<Button>(Resource.Id.getMoviesButton);
 
@@ -71,12 +96,14 @@ namespace Movies
 
 
                     // Get the title text  entered by the user and create a query.
-                    string url = "http://www.omdbapi.com/?s=" + movieTitle.Text + "&r=json" + "&page=3";
+                    string url = "http://www.omdbapi.com/?s=" + movieTitle.Text + "&r=json" + "&page=" + pageNumber.ToString();
+                   
 
                     // Fetch the weather information asynchronously, 
                     // parse the results, then update the screen:
 
                     results = await FetchDataMoviesAsync(url);
+                     
                     // int size = results.Search.Count;
                     // string[] items = new string[size];
                     /* results.Search.ForEach(delegate (Movie current_Movie)
@@ -85,19 +112,23 @@ namespace Movies
                          Console.Out.WriteLine("elenco film trovati: {0}", current_Movie.Title);
                      });*/
 
-                    string[] items = results.Search.Select(x => x.Title + " (" + x.Year + ")").ToArray();
+                    //string[] items = results.Search.Select(x => x.Title + " (" + x.Year + ")").ToArray();
 
+                    items = new List<string>();
+                    items = results.Search.Select(x => x.Title + " (" + x.Year + ")").ToList();
                     //items = new string[] { "Vegetables", "Fruits", "Flower Buds", "Legumes", "Bulbs", "Tubers" };
 
+                    items.Add("Load more items...");
+                    
                     Console.Out.WriteLine("vedere se funziona il parse : {0} {1} {2}", results.totalResults, results.Response, results.Error);
-
+                     
                     listaFilm.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, items);
-
-
+                    
 
                     //ListAdapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, items);
 
                     // ParseAndDisplay (json);
+                    next.Visibility = ViewStates.Visible;
                 }
                 else
                 {
@@ -108,16 +139,65 @@ namespace Movies
 
             };
 
-            listaFilm.ItemClick += (sender, e) => {
+            listaFilm.ItemClick += async (sender, e) => {
                 //Console.Out.WriteLine("detagli e: {0}", e);
                 // var t = e.Position.ToString();
 
                 // Android.Widget.Toast.MakeText(this,results.Search[e.Position].imdbID  , Android.Widget.ToastLength.Short).Show();
 
-                Intent intent = new Intent(this, typeof(MovieDetails));
-                intent.PutExtra("MovieId", results.Search[e.Position].imdbID);
-                this.StartActivity(intent);
-                //this.OverridePendingTransition(Android.Resource.Animation.FadeIn, Android.Resource.Animation.FadeOut);
+                if (e.Position == (items.Count - 1) && pageNumber != (Convert.ToInt16(results.totalResults) % 10 == 0 ? Convert.ToInt16(results.totalResults) / 10 : (Convert.ToInt16(results.totalResults) / 10) + 1))
+                {
+                    if (pageNumber >= 1 && pageNumber < (Convert.ToInt16(results.totalResults) % 10 == 0 ? Convert.ToInt16(results.totalResults) / 10 : (Convert.ToInt16(results.totalResults) / 10) + 1) - 1)
+                    {
+                        pageNumber++;
+                        string url = "http://www.omdbapi.com/?s=" + movieTitle.Text + "&r=json" + "&page=" + pageNumber.ToString();
+                        SearchResponse resultsNuovi = await FetchDataMoviesAsync(url);
+                        results.Search.AddRange(resultsNuovi.Search);
+                        //Console.Out.WriteLine("I nuovi risultati messi insieme {0}", JsonConvert.SerializeObject(resultsNuovi));
+                        // results.Search.Add(resultsNuovi.Search.GetRange(0, 1)[0]);
+
+                        //Console.Out.WriteLine("****************************************************");
+                        //Console.Out.WriteLine("First movie NUOVI: {0}", resultsNuovi.Search.GetRange(0, 1)[0].Title);
+                        List<string> itemsNew = new List<string>();
+                        itemsNew = resultsNuovi.Search.Select(x => x.Title + " (" + x.Year + ")").ToList();
+                        //items = new string[] { "Vegetables", "Fruits", "Flower Buds", "Legumes", "Bulbs", "Tubers" };
+                        items.RemoveAt(e.Position);
+                        items.AddRange(itemsNew);
+                        items.Add("Load more items...");
+
+                        listaFilm.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, items);
+
+                    }
+                    else
+                    if (pageNumber < (Convert.ToInt16(results.totalResults) % 10 == 0 ? Convert.ToInt16(results.totalResults) / 10 : (Convert.ToInt16(results.totalResults) / 10) + 1))
+                    {
+                        pageNumber++;
+                        string url = "http://www.omdbapi.com/?s=" + movieTitle.Text + "&r=json" + "&page=" + pageNumber.ToString();
+                        SearchResponse resultsNuovi = await FetchDataMoviesAsync(url);
+                        results.Search.AddRange(resultsNuovi.Search);
+                        //Console.Out.WriteLine("I nuovi risultati messi insieme {0}", JsonConvert.SerializeObject(resultsNuovi));
+                        // results.Search.Add(resultsNuovi.Search.GetRange(0, 1)[0]);
+                        // Console.Out.WriteLine("First movie NUOVI: {0}", resultsNuovi.Search.GetRange(0, 1)[0].Title);
+                        // Console.Out.WriteLine("****************************************************");
+
+                        List<string> itemsNew = new List<string>();
+                        itemsNew = resultsNuovi.Search.Select(x => x.Title + " (" + x.Year + ")").ToList();
+                        //items = new string[] { "Vegetables", "Fruits", "Flower Buds", "Legumes", "Bulbs", "Tubers" };
+                        items.RemoveAt(e.Position);
+                        items.AddRange(itemsNew);
+
+                        listaFilm.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, items);
+
+                    }
+                }
+                else {
+
+                    Intent intent = new Intent(this, typeof(MovieDetails));
+                    Console.Out.WriteLine("lunghezza di results : {0}", results.Search.Count());
+                    intent.PutExtra("MovieId", results.Search[e.Position].imdbID);
+                    this.StartActivity(intent);
+                    //this.OverridePendingTransition(Android.Resource.Animation.FadeIn, Android.Resource.Animation.FadeOut);
+                }
             };
 
             

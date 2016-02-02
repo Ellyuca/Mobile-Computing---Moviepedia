@@ -78,17 +78,17 @@ namespace Movies
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f06000a
-			public const int details = 2131099658;
+			// aapt resource value: 0x7f06000b
+			public const int details = 2131099659;
 			
 			// aapt resource value: 0x7f060005
 			public const int getMoviesButton = 2131099653;
 			
-			// aapt resource value: 0x7f060008
-			public const int getNextButton = 2131099656;
+			// aapt resource value: 0x7f060009
+			public const int getNextButton = 2131099657;
 			
-			// aapt resource value: 0x7f060007
-			public const int getPreviousButton = 2131099655;
+			// aapt resource value: 0x7f060008
+			public const int getPreviousButton = 2131099656;
 			
 			// aapt resource value: 0x7f060004
 			public const int getSection = 2131099652;
@@ -99,17 +99,20 @@ namespace Movies
 			// aapt resource value: 0x7f060000
 			public const int mainView = 2131099648;
 			
-			// aapt resource value: 0x7f06000b
-			public const int movieImage = 2131099659;
-			
 			// aapt resource value: 0x7f06000c
-			public const int moviePlot = 2131099660;
+			public const int movieImage = 2131099660;
 			
 			// aapt resource value: 0x7f06000d
-			public const int moviePlot2 = 2131099661;
+			public const int moviePlot = 2131099661;
 			
-			// aapt resource value: 0x7f060009
-			public const int scrollView = 2131099657;
+			// aapt resource value: 0x7f06000e
+			public const int moviePlot2 = 2131099662;
+			
+			// aapt resource value: 0x7f060007
+			public const int prev_next_section = 2131099655;
+			
+			// aapt resource value: 0x7f06000a
+			public const int scrollView = 2131099658;
 			
 			// aapt resource value: 0x7f060002
 			public const int titleLabel = 2131099650;
