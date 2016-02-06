@@ -19,7 +19,7 @@ using Android.Views.InputMethods;
 
 namespace Movies
 {
-    [Activity(Label = "Movies",  Icon = "@drawable/icon")]
+    [Activity(Label = "Movies", Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
         private SearchResponse results;
@@ -48,19 +48,19 @@ namespace Movies
             // and attach an event to it
             // Get the Title EditBox and button resources:
 
-          //  next = FindViewById<Button>(Resource.Id.getNextButton);
-           // prev = FindViewById<Button>(Resource.Id.getPreviousButton);
-         //   next.Visibility = ViewStates.Invisible;
-         //   prev.Visibility = ViewStates.Invisible;
+            //  next = FindViewById<Button>(Resource.Id.getNextButton);
+            // prev = FindViewById<Button>(Resource.Id.getPreviousButton);
+            //   next.Visibility = ViewStates.Invisible;
+            //   prev.Visibility = ViewStates.Invisible;
 
 
 
             mLinearLayout = FindViewById<LinearLayout>(Resource.Id.mainView);
             mTitleSectionLayout = FindViewById<LinearLayout>(Resource.Id.titleSection);
             mGetSectionLayout = FindViewById<LinearLayout>(Resource.Id.getSection);
-           // mPrevNextLayout = FindViewById<LinearLayout>(Resource.Id.prev_next_section);
+            // mPrevNextLayout = FindViewById<LinearLayout>(Resource.Id.prev_next_section);
             mListaLayout = FindViewById<ListView>(Resource.Id.listaFilm);
-            
+
             mLinearLayout.Click += (sender, e) =>
             {
                 InputMethodManager inputManager = (InputMethodManager)this.GetSystemService(Activity.InputMethodService);
@@ -77,18 +77,19 @@ namespace Movies
                 InputMethodManager inputManager = (InputMethodManager)this.GetSystemService(Activity.InputMethodService);
                 inputManager.HideSoftInputFromWindow(this.CurrentFocus.WindowToken, HideSoftInputFlags.None);
             };
-            
-           /* mPrevNextLayout.Click += (sender, e) =>
-            {
-                InputMethodManager inputManager = (InputMethodManager)this.GetSystemService(Activity.InputMethodService);
-                inputManager.HideSoftInputFromWindow(this.CurrentFocus.WindowToken, HideSoftInputFlags.None);
-            };*/
+
+            /* mPrevNextLayout.Click += (sender, e) =>
+             {
+                 InputMethodManager inputManager = (InputMethodManager)this.GetSystemService(Activity.InputMethodService);
+                 inputManager.HideSoftInputFromWindow(this.CurrentFocus.WindowToken, HideSoftInputFlags.None);
+             };*/
 
             movieTitle = FindViewById<EditText>(Resource.Id.titleText);
             listaFilm = FindViewById<ListView>(Resource.Id.listaFilm);
             Button searchMoviesButton = FindViewById<Button>(Resource.Id.getMoviesButton);
 
-            searchMoviesButton.Click += async (sender, e) => {
+            searchMoviesButton.Click += async (sender, e) =>
+            {
                 InputMethodManager inputManager = (InputMethodManager)this.GetSystemService(Activity.InputMethodService);
                 inputManager.HideSoftInputFromWindow(this.CurrentFocus.WindowToken, HideSoftInputFlags.None);
 
@@ -117,28 +118,31 @@ namespace Movies
 
                         //string[] items = results.Search.Select(x => x.Title + " (" + x.Year + ")").ToArray();
 
-                        if (results.Response == "False")
+                        if (results != null)
                         {
-                            listaFilm.SetAdapter(null);
-                            DisplayAlert("Alert", "No results were found", "OK");
-                        }
-                        else
-                        {
-                            items = new List<string>();
-                            items = results.Search.Select(x => x.Title + " (" + x.Year + ")").ToList();
-                            //items = new string[] { "Vegetables", "Fruits", "Flower Buds", "Legumes", "Bulbs", "Tubers" };
-                            if(Convert.ToInt16(results.totalResults) > 10) 
-                               items.Add("Load more items...");
+                            if (results.Response == "False")
+                            {
+                                listaFilm.SetAdapter(null);
+                                DisplayAlert("Alert", "No results were found", "OK");
+                            }
+                            else
+                            {
+                                items = new List<string>();
+                                items = results.Search.Select(x => x.Title + " (" + x.Year + ")").ToList();
+                                //items = new string[] { "Vegetables", "Fruits", "Flower Buds", "Legumes", "Bulbs", "Tubers" };
+                                if (Convert.ToInt16(results.totalResults) > 10)
+                                    items.Add("Load more items...");
 
-                            Console.Out.WriteLine("vedere se funziona il parse : {0} {1} {2}", results.totalResults, results.Response, results.Error);
+                                Console.Out.WriteLine("vedere se funziona il parse : {0} {1} {2}", results.totalResults, results.Response, results.Error);
 
-                            listaFilm.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, items);
+                                listaFilm.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, items);
 
 
-                            //ListAdapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, items);
+                                //ListAdapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, items);
 
-                            // ParseAndDisplay (json);
-                            // next.Visibility = ViewStates.Visible;
+                                // ParseAndDisplay (json);
+                                // next.Visibility = ViewStates.Visible;
+                            }
                         }
                     }
                     else
@@ -148,14 +152,15 @@ namespace Movies
                 }
                 else
                 {
-                     DisplayAlert("Alert", "You need INTERNET CONNECTION", "OK");
+                    DisplayAlert("Alert", "You need INTERNET CONNECTION", "OK");
                 }
-                
+
                 
 
             };
 
-            listaFilm.ItemClick += async (sender, e) => {
+            listaFilm.ItemClick += async (sender, e) =>
+            {
                 //Console.Out.WriteLine("detagli e: {0}", e);
                 // var t = e.Position.ToString();
 
@@ -163,7 +168,7 @@ namespace Movies
 
                 if (e.Position == (items.Count - 1) && pageNumber != (Convert.ToInt16(results.totalResults) % 10 == 0 ? Convert.ToInt16(results.totalResults) / 10 : (Convert.ToInt16(results.totalResults) / 10) + 1))
                 {
-                    if ( pageNumber < (Convert.ToInt16(results.totalResults) % 10 == 0 ? Convert.ToInt16(results.totalResults) / 10 : (Convert.ToInt16(results.totalResults) / 10) + 1) - 1)
+                    if (pageNumber < (Convert.ToInt16(results.totalResults) % 10 == 0 ? Convert.ToInt16(results.totalResults) / 10 : (Convert.ToInt16(results.totalResults) / 10) + 1) - 1)
                     {
                         pageNumber++;
                         string url = "http://www.omdbapi.com/?s=" + movieTitle.Text + "&r=json" + "&page=" + pageNumber.ToString();
@@ -185,8 +190,8 @@ namespace Movies
                         listaFilm.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, items);
                         //listaFilm.SmoothScrollToPosition(scrollNumber);
                         listaFilm.SetSelection(scrollNumber);
-                        
-                        
+
+
                     }
                     else
                     if (pageNumber < (Convert.ToInt16(results.totalResults) % 10 == 0 ? Convert.ToInt16(results.totalResults) / 10 : (Convert.ToInt16(results.totalResults) / 10) + 1))
@@ -220,7 +225,7 @@ namespace Movies
                 }
             };
 
-            
+
         }
 
         private void DisplayAlert(string v1, string v2, string v3)
@@ -228,63 +233,79 @@ namespace Movies
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.SetTitle(v1);
             alert.SetMessage(v2);
-            alert.SetNeutralButton(v3, (senderAlert, args) => {
-                  alert.Dispose();
+            alert.SetNeutralButton(v3, (senderAlert, args) =>
+            {
+                alert.Dispose();
             });
-                
+
             Dialog dialog = alert.Create();
             dialog.Show();
         }
         public bool isConnected()
-        {      
-            
-                try
-                {
-                    Android.Net.ConnectivityManager connectivityManager = (Android.Net.ConnectivityManager)GetSystemService(ConnectivityService);
-                    Android.Net.NetworkInfo activeConnection = connectivityManager.ActiveNetworkInfo;
-                    bool isOnline = (activeConnection != null) && activeConnection.IsConnected;
-                    return isOnline;
-                }
-                catch (Exception e)
-                {
+        {
 
-                    Console.Out.WriteLine(e.ToString());
-                    return false;
-                }
-            
+            try
+            {
+                Android.Net.ConnectivityManager connectivityManager = (Android.Net.ConnectivityManager)GetSystemService(ConnectivityService);
+                Android.Net.NetworkInfo activeConnection = connectivityManager.ActiveNetworkInfo;
+                bool isOnline = (activeConnection != null) && activeConnection.IsConnected;
+                return isOnline;
+            }
+            catch (Exception e)
+            {
+
+                Console.Out.WriteLine(e.ToString());
+                return false;
+            }
+
         }
 
         private async Task<SearchResponse> FetchDataMoviesAsync(string url)
         {
             // Create an HTTP web request using the URL:
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
-            request.ContentType = "application/json";
-            request.Method = "GET";
-
-            // Send the request to the server and wait for the response:
-            using (WebResponse response = await request.GetResponseAsync())
+            try
             {
-                // Get a stream representation of the HTTP web response: 
-                using (Stream stream = response.GetResponseStream())
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
+                request.ContentType = "application/json";
+                request.Method = "GET";
+
+                // Send the request to the server and wait for the response:
+                using (WebResponse response = await request.GetResponseAsync())
                 {
-                    // Use this stream to build a JSON document object:
-                    StreamReader reader = new StreamReader(stream);
-                    string text = reader.ReadToEnd();
-                    Console.Out.WriteLine("Response string: {0}", text);
+                    // Get a stream representation of the HTTP web response: 
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        // Use this stream to build a JSON document object:
+                        StreamReader reader = new StreamReader(stream);
+                        string text = reader.ReadToEnd();
+                        Console.Out.WriteLine("Response string: {0}", text);
 
-                    SearchResponse results = JsonConvert.DeserializeObject<SearchResponse>(text);
+                        SearchResponse results = JsonConvert.DeserializeObject<SearchResponse>(text);
 
-                    /* Per test */
-                    Console.Out.WriteLine("Reserialized: {0}", JsonConvert.SerializeObject(results));
-                   // Console.Out.WriteLine("First movie: {0}", results.Search.GetRange(0, 1)[0].Title);
+                        /* Per test */
+                        Console.Out.WriteLine("Reserialized: {0}", JsonConvert.SerializeObject(results));
+                        // Console.Out.WriteLine("First movie: {0}", results.Search.GetRange(0, 1)[0].Title);
 
-                    return results;
+                        return results;
+                    }
                 }
             }
-        }
+            catch (WebException ex)
+            {
 
-        
+                DisplayAlert("Alert", "Something went wrong with the server. Please try again later", "OK");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Alert", "Something went wrong. Please try again later", "OK");
+                return null;
+            }
+
+
         }
+    }
 }
+
 
 
