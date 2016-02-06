@@ -49,10 +49,9 @@
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:id="@+id/listaFilm" />
-        <LinearLayout
+    <!-- <LinearLayout
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
@@ -80,6 +79,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_below="@id/listaFilm" />
-        </LinearLayout>
+        </LinearLayout> -->
     </LinearLayout>
 </LinearLayout>
