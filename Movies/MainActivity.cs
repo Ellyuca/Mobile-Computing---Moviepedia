@@ -227,7 +227,13 @@ namespace Movies
 
 
         }
+        public override void OnBackPressed()
+        {
+            MoveTaskToBack(true);
+            
+        }
 
+        
         private void DisplayAlert(string v1, string v2, string v3)
         {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);

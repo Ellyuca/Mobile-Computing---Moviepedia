@@ -10,7 +10,7 @@
    
   <item>
     <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-      android:src="@drawable/splash"
+      android:src="@drawable/finalSplash"
       android:gravity="center"
       android:tileMode="disabled"
       android:layout_gravity="center"/>

@@ -25,6 +25,7 @@ namespace Movies
             base.OnCreate(bundle);
             Thread.Sleep(2000); // Simulate a long loading process on app startup.
             StartActivity(typeof(MainActivity));
+            Finish();
             
         }
     }
