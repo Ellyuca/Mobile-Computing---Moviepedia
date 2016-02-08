@@ -4,11 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/mainView">
-<!--<Button
-        android:id="@+id/MyButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/Hello" /> -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
@@ -51,34 +46,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/listaFilm" />
-    <!-- <LinearLayout
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:id="@+id/prev_next_section">
-            <Button
-                android:id="@+id/getPreviousButton"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:gravity="center_horizontal"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Previous"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@id/listaFilm" />
-            <Button
-                android:id="@+id/getNextButton"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:gravity="center_horizontal"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Next"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@id/listaFilm" />
-        </LinearLayout> -->
     </LinearLayout>
 </LinearLayout>

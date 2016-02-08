@@ -1,20 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Android.Graphics;
-using Android.Media;
+
 
 namespace Movies
 {
@@ -23,7 +17,7 @@ namespace Movies
     {
         string movieId;
         TextView moviePlot;
-        TextView moviePlot2;
+       // TextView moviePlot2;
         TextView movieDetails;
         ImageView movieImage;
         WebClient webClient;
@@ -34,7 +28,7 @@ namespace Movies
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.MovieDetails);
-            //movieId = FindViewById<TextView>(Resource.Id.movieId);
+           
 
             movieId = Intent.GetStringExtra("MovieId");
 
@@ -46,7 +40,7 @@ namespace Movies
             movieDetails.Text = all_Info.Title;
 
             moviePlot = FindViewById<TextView>(Resource.Id.moviePlot);
-            moviePlot2 = FindViewById<TextView>(Resource.Id.moviePlot2);
+            //moviePlot2 = FindViewById<TextView>(Resource.Id.moviePlot2);
             if (all_Info.Plot.ToLower().Equals("n/a"))
                 
             {
@@ -59,11 +53,9 @@ namespace Movies
 
             }
    
-            moviePlot2.Text = all_Info.Plot;
+            //moviePlot2.Text = all_Info.Plot;
             movieImage = FindViewById<ImageView>(Resource.Id.movieImage);
 
-            //Button clickButton = FindViewById<Button>(Resource.Id.downloadImage);
-            //clickButton.Click += downloadAsync(this, this,all_Info.Plot.ToString());
             Uri uriResult;
             bool validUrl = Uri.TryCreate(all_Info.Poster, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
             if (validUrl)
@@ -96,34 +88,14 @@ namespace Movies
                     MovieInfo all_Info = JsonConvert.DeserializeObject<MovieInfo>(text);
 
                     /* Per test */
-                    Console.Out.WriteLine("Reserialized: {0}", JsonConvert.SerializeObject(all_Info));
-                    Console.Out.WriteLine("First movie: {0}", all_Info.Title);
+                    //Console.Out.WriteLine("Reserialized: {0}", JsonConvert.SerializeObject(all_Info));
+                    //Console.Out.WriteLine("First movie: {0}", all_Info.Title);
 
                     return all_Info;
                 }
             }
         }
-        /* private Bitmap GetImageBitmapFromUrl(string url)
-         {
-             Bitmap imageBitmap = null;
-
-             using (var webClient = new WebClient())
-             {
-                 var imageBytes = webClient.DownloadData(url);
-                 if (imageBytes != null && imageBytes.Length > 0)
-                 {
-                     imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-                 }
-             }
-
-             return imageBitmap;
-         }*/
-       /* private static  bool isUrl(this string str)
-        {
-            Uri uriResult;
-            bool result = Uri.TryCreate(str, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-            return result;
-        }*/
+       
         private async void downloadAsync(string myUrl)
         {
             webClient = new WebClient();

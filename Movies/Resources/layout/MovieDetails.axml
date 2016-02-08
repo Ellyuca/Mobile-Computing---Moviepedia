@@ -39,14 +39,14 @@
                 android:gravity="center"
                 android:layout_below="@id/movieImage"
                 android:paddingTop="35px" />
-            <TextView
+        <!-- <TextView
                 android:text="Plot2"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/moviePlot2"
                 android:gravity="center"
-                android:layout_below="@id/moviePlot" />
+                android:layout_below="@id/moviePlot" /> -->
         </TableLayout>
     </ScrollView>
 </RelativeLayout>

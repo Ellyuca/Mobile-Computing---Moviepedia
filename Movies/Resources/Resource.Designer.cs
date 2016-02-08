@@ -102,9 +102,6 @@ namespace Movies
 			// aapt resource value: 0x7f06000a
 			public const int moviePlot = 2131099658;
 			
-			// aapt resource value: 0x7f06000b
-			public const int moviePlot2 = 2131099659;
-			
 			// aapt resource value: 0x7f060007
 			public const int scrollView = 2131099655;
 			
